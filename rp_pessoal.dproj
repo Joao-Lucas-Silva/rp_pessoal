@@ -153,6 +153,19 @@
             <Form>ExtratoFrm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="CarteiraDM.pas">
+            <Form>CarteiraDtm</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="CadastroCarteiraForm.pas">
+            <Form>CadastroCarteiraFrm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="NovoCarteiraForm.pas">
+            <Form>NovoCarteiraFrm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

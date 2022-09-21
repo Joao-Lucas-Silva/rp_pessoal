@@ -28,20 +28,16 @@ var
 implementation
 
 uses
-  Vcl.Forms, System.SysUtils, Vcl.Dialogs;
+  Vcl.Forms, System.SysUtils;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
 
 procedure TConexaoDtm.CriarTabelas;
-var
-  Database:string;
 begin
-  Database:=Conexao.Params.Database;
-
   //Tabela Conta Correte
-  cmd.CommandText.Add('CREATE TABLE if not exists `'+Database+'`.`conta_corrente` ('+
+  cmd.CommandText.Add('CREATE TABLE if not exists `rp_pessoal`.`conta_corrente` ('+
   '`controle` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,'+
   '`saldo` DECIMAL(12,2),'+
   'PRIMARY KEY(`controle`)'+
@@ -51,7 +47,7 @@ begin
 
   //Tabela Entrada
   cmd.CommandText.Clear;
-  cmd.CommandText.Add('CREATE TABLE if not exists `'+Database+'`.`entrada` ('+
+  cmd.CommandText.Add('CREATE TABLE if not exists `rp_pessoal`.`entrada` ('+
   '`cod_entrada` INTEGER unsigned NOT NULL AUTO_INCREMENT,'+
   '`descricao` varchar(50) DEFAULT NULL,'+
   '`cod_origem` INTEGER unsigned DEFAULT NULL,'+
@@ -64,7 +60,7 @@ begin
 
   //Tabela Saida
   cmd.CommandText.Clear;
-  cmd.CommandText.Add('CREATE TABLE if not exists `'+Database+'`.`saida` ('+
+  cmd.CommandText.Add('CREATE TABLE if not exists `rp_pessoal`.`saida` ('+
   '`cod_saida` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,'+
   '`descricao` VARCHAR(45),'+
   '`cod_origem` INTEGER UNSIGNED,'+
@@ -72,17 +68,6 @@ begin
   '`hora` TIME,'+
   '`valor` DECIMAL(12,2),'+
   'PRIMARY KEY(`cod_saida`)'+
-  ')'+
-  'ENGINE = InnoDB;');
-  cmd.Execute();
-
-  //Tabela Carteira
-  cmd.CommandText.Clear;
-  cmd.CommandText.Add('CREATE TABLE if not exists `'+Database+'`.`carteira` ('+
-  '`cod_carteira` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,'+
-  '`nome_carteira` VARCHAR(45),'+
-  '`dt_cadastro` DATE,'+
-  'PRIMARY KEY(`cod_carteira`)'+
   ')'+
   'ENGINE = InnoDB;');
   cmd.Execute();

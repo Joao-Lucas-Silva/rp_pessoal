@@ -1,0 +1,11 @@
+object CarteiraDtm: TCarteiraDtm
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 199
+  Width = 256
+  object qryCarteira: TFDQuery
+    Connection = ConexaoDtm.Conexao
+    Left = 112
+    Top = 80
+  end
+end

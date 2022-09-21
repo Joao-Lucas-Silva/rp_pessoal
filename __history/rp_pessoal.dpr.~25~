@@ -15,8 +15,7 @@ uses
   ConfiguracoesForm in 'ConfiguracoesForm.pas' {ConfiguracoesFrm},
   ExtratoForm in 'ExtratoForm.pas' {ExtratoFrm},
   CarteiraDM in 'CarteiraDM.pas' {CarteiraDtm: TDataModule},
-  CadastroCarteiraForm in 'CadastroCarteiraForm.pas' {CadastroCarteiraFrm},
-  NovoCarteiraForm in 'NovoCarteiraForm.pas' {NovoCarteiraFrm};
+  CadastroCarteiraForm in 'CadastroCarteiraForm.pas' {CadastroCarteiraFrm};
 
 {$R *.res}
 
@@ -30,6 +29,5 @@ begin
   Application.CreateForm(TExtratoFrm, ExtratoFrm);
   Application.CreateForm(TCarteiraDtm, CarteiraDtm);
   Application.CreateForm(TCadastroCarteiraFrm, CadastroCarteiraFrm);
-  Application.CreateForm(TNovoCarteiraFrm, NovoCarteiraFrm);
   Application.Run;
 end.

@@ -255,7 +255,7 @@ object PrincipalFrm: TPrincipalFrm
         Layout = blGlyphTop
         ParentFont = False
       end
-      object lblCarteiraAtual: TLabel
+      object Label2: TLabel
         Left = 604
         Top = 17
         Width = 105

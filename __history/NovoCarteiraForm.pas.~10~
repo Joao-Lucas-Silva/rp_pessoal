@@ -1,0 +1,82 @@
+unit NovoCarteiraForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList;
+
+type
+  TNovoCarteiraFrm = class(TForm)
+    edtNomeCarteira: TEdit;
+    Label1: TLabel;
+    ActionList1: TActionList;
+    actSalvar: TAction;
+    actVoltar: TAction;
+    ImageList1: TImageList;
+    btnNovo: TSpeedButton;
+    btnVoltar: TSpeedButton;
+    procedure actVoltarExecute(Sender: TObject);
+    procedure actSalvarExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    OpCadastro:string;
+    procedure Iniciar();
+  end;
+
+var
+  NovoCarteiraFrm: TNovoCarteiraFrm;
+
+implementation
+
+{$R *.dfm}
+
+uses FerramentasForm, CarteiraDM;
+
+procedure TNovoCarteiraFrm.actSalvarExecute(Sender: TObject);
+var
+  Codigo:integer;
+begin
+  Codigo:=0;
+
+  if (edtNomeCarteira.Text='') then
+    FerramentasFrm.MsgPadrao('INFORME O NOME DA CARTEIRA','SALVAR',1)
+  else
+  begin
+    try
+      if (OpCadastro='N') then
+        CarteiraDtm.qryCarteira.Append
+      else
+      begin
+        Codigo:=CarteiraDtm.qryCarteira.FieldByName('cod_carteira').AsInteger;
+        CarteiraDtm.qryCarteira.Edit;
+      end;
+
+      CarteiraDtm.qryCarteira.FieldByName('nome_carteira').AsString:=edtNomeCarteira.Text;
+      CarteiraDtm.qryCarteira.Post;
+    except
+      on e:exception do
+      begin
+        CarteiraDtm.qryCarteira.Cancel;
+        FerramentasFrm.MsgPadrao('OCORREU UM ERRO.'+sLineBreak+'ERRO: '+e.Message,'',2);
+      end;
+    end;
+
+  end;
+end;
+
+procedure TNovoCarteiraFrm.actVoltarExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TNovoCarteiraFrm.Iniciar;
+begin
+  if (OpCadastro='A') then
+    edtNomeCarteira.Text:=CarteiraDtm.qryCarteira.FieldByName('nome_carteira').AsString;
+end;
+
+end.

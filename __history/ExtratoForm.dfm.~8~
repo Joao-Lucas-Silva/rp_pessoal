@@ -113,6 +113,9 @@ object ExtratoFrm: TExtratoFrm
     Color = clWhite
     ParentBackground = False
     TabOrder = 2
+    ExplicitLeft = 192
+    ExplicitTop = 248
+    ExplicitWidth = 185
     object lblTituloSaldo: TLabel
       Left = 462
       Top = 16
@@ -165,7 +168,6 @@ object ExtratoFrm: TExtratoFrm
       FieldName = 'cod_saida'
       Origin = 'cod_saida'
       ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
     end
     object qrySaidadata: TDateField
       Alignment = taCenter
@@ -207,7 +209,6 @@ object ExtratoFrm: TExtratoFrm
       FieldName = 'cod_entrada'
       Origin = 'cod_entrada'
       ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
     end
     object qryEntradadata: TDateField
       Alignment = taCenter

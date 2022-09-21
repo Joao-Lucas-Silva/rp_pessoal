@@ -1,0 +1,92 @@
+unit CadastroCarteiraForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Buttons, Vcl.Grids,
+  Vcl.DBGrids, System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList;
+
+type
+  TCadastroCarteiraFrm = class(TForm)
+    grdCadastro: TDBGrid;
+    btnVoltar: TSpeedButton;
+    btnAlterar: TSpeedButton;
+    btnExcluir: TSpeedButton;
+    btnNovo: TSpeedButton;
+    ActionList1: TActionList;
+    ImageList1: TImageList;
+    actNovo: TAction;
+    actAlterar: TAction;
+    actExcluir: TAction;
+    actVoltar: TAction;
+    dtsCadastro: TDataSource;
+    procedure FormActivate(Sender: TObject);
+    procedure actVoltarExecute(Sender: TObject);
+    procedure actExcluirExecute(Sender: TObject);
+    procedure actAlterarExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  CadastroCarteiraFrm: TCadastroCarteiraFrm;
+
+implementation
+
+{$R *.dfm}
+
+uses CarteiraDM, FerramentasForm, NovoCarteiraForm;
+
+procedure TCadastroCarteiraFrm.actAlterarExecute(Sender: TObject);
+begin
+  if (grdCadastro.SelectedField.DisplayText<>'') then
+  begin
+    Application.CreateForm(TNovoCarteiraFrm,NovoCarteiraFrm);
+    try
+      NovoCarteiraFrm.OpCadastro:='A';
+      NovoCarteiraFrm.Iniciar();
+      NovoCarteiraFrm.ShowModal;
+    finally
+      FreeAndNil(NovoCarteiraFrm);
+    end;
+  end
+  else
+    FerramentasFrm.MsgPadrao('ESCOLHA UM REGISTRO','ALTERAR',1)
+end;
+
+procedure TCadastroCarteiraFrm.actExcluirExecute(Sender: TObject);
+begin
+  if (grdCadastro.SelectedField.DisplayText<>'') then
+  begin
+    if (Application.MessageBox('DESEJA REALMENTE EXCLUIR ESTE CADASTRO?','EXCLUIR',MB_YESNO+MB_ICONQUESTION)=IDYES) then
+    begin
+      CarteiraDtm.qryCarteira.Delete;
+      CarteiraDtm.qryCarteira.Refresh;
+      CarteiraDtm.qryCarteira.Last;
+    end;
+  end
+  else
+    FerramentasFrm.MsgPadrao('ESCOLHA UM REGISTRO','EXCLUIR',1)
+end;
+
+procedure TCadastroCarteiraFrm.actVoltarExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TCadastroCarteiraFrm.FormActivate(Sender: TObject);
+begin
+  WindowState:=TWindowState.wsMaximized;
+
+  CarteiraDtm.qryCarteira.Close;
+  CarteiraDtm.qryCarteira.SQL.Clear;
+  CarteiraDtm.qryCarteira.SQL.Add(CarteiraDtm.Select);
+  CarteiraDtm.qryCarteira.SQL.Add(CarteiraDtm.From);
+  CarteiraDtm.qryCarteira.Open();
+  CarteiraDtm.qryCarteira.Last;
+end;
+
+end.

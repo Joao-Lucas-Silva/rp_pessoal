@@ -13,10 +13,7 @@ uses
   NovaSaidaForm in 'NovaSaidaForm.pas' {NovaSaidaFrm},
   ConexaoForm in 'ConexaoForm.pas' {ConexaoFrm},
   ConfiguracoesForm in 'ConfiguracoesForm.pas' {ConfiguracoesFrm},
-  ExtratoForm in 'ExtratoForm.pas' {ExtratoFrm},
-  CarteiraDM in 'CarteiraDM.pas' {CarteiraDtm: TDataModule},
-  CadastroCarteiraForm in 'CadastroCarteiraForm.pas' {CadastroCarteiraFrm},
-  NovoCarteiraForm in 'NovoCarteiraForm.pas' {NovoCarteiraFrm};
+  ExtratoForm in 'ExtratoForm.pas' {ExtratoFrm};
 
 {$R *.res}
 
@@ -28,8 +25,5 @@ begin
   Application.CreateForm(TFerramentasFrm, FerramentasFrm);
   Application.CreateForm(TConfiguracoesFrm, ConfiguracoesFrm);
   Application.CreateForm(TExtratoFrm, ExtratoFrm);
-  Application.CreateForm(TCarteiraDtm, CarteiraDtm);
-  Application.CreateForm(TCadastroCarteiraFrm, CadastroCarteiraFrm);
-  Application.CreateForm(TNovoCarteiraFrm, NovoCarteiraFrm);
   Application.Run;
 end.

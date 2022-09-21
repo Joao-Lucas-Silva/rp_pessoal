@@ -1,0 +1,57 @@
+object CadastroCarteiraFrm: TCadastroCarteiraFrm
+  Left = 0
+  Top = 0
+  Caption = 'CadastroCarteiraFrm'
+  ClientHeight = 360
+  ClientWidth = 672
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object btnVoltar: TSpeedButton
+    Left = 8
+    Top = 8
+    Width = 95
+    Height = 24
+    Flat = True
+  end
+  object btnAlterar: TSpeedButton
+    Left = 569
+    Top = 303
+    Width = 95
+    Height = 24
+    Flat = True
+  end
+  object btnExcluir: TSpeedButton
+    Left = 569
+    Top = 328
+    Width = 95
+    Height = 24
+    Flat = True
+  end
+  object btnNovo: TSpeedButton
+    Left = 569
+    Top = 278
+    Width = 95
+    Height = 24
+    Flat = True
+  end
+  object DBGrid1: TDBGrid
+    Left = 8
+    Top = 38
+    Width = 656
+    Height = 234
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+end

@@ -1,0 +1,5 @@
+object CarteiraDtm: TCarteiraDtm
+  OldCreateOrder = False
+  Height = 199
+  Width = 256
+end

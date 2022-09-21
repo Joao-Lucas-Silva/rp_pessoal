@@ -75,17 +75,6 @@ begin
   ')'+
   'ENGINE = InnoDB;');
   cmd.Execute();
-
-  //Tabela Carteira
-  cmd.CommandText.Clear;
-  cmd.CommandText.Add('CREATE TABLE if not exists `'+Database+'`.`carteira` ('+
-  '`cod_carteira` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,'+
-  '`nome_carteira` VARCHAR(45),'+
-  '`dt_cadastro` DATE,'+
-  'PRIMARY KEY(`cod_carteira`)'+
-  ')'+
-  'ENGINE = InnoDB;');
-  cmd.Execute();
 end;
 
 procedure TConexaoDtm.DataModuleCreate(Sender: TObject);

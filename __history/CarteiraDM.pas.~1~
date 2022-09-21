@@ -1,0 +1,25 @@
+unit CarteiraDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TCarteiraDtm = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  CarteiraDtm: TCarteiraDtm;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

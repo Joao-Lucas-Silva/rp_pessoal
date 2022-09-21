@@ -35,7 +35,6 @@ type
     btnExtrato: TSpeedButton;
     btnCadastroCarteira: TSpeedButton;
     actCadastroCarteira: TAction;
-    lblCarteiraAtual: TLabel;
     procedure actNovaSaidaExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

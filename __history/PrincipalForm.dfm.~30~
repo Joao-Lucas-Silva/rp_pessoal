@@ -208,7 +208,7 @@ object PrincipalFrm: TPrincipalFrm
         Height = 16
         Caption = 'Sauda'#231#245'es'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
+        Font.Color = clGray
         Font.Height = -13
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]

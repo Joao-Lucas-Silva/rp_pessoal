@@ -3,7 +3,7 @@ unit ConexaoDM;
 interface
 
 uses
-  System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   Data.DB, FireDAC.Comp.Client, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef,
@@ -26,9 +26,6 @@ var
   ConexaoDtm: TConexaoDtm;
 
 implementation
-
-uses
-  Vcl.Forms, System.SysUtils;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -75,8 +72,6 @@ end;
 
 procedure TConexaoDtm.DataModuleCreate(Sender: TObject);
 begin
-  FDPhysMySQLDriverLink1.VendorLib:='';
-  FDPhysMySQLDriverLink1.VendorLib:=ExtractFilePath(Application.ExeName)+'libmysql.dll';
   CriarTabelas();
 end;
 

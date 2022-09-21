@@ -1,0 +1,39 @@
+unit NovaSaidaForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
+  System.ImageList, Vcl.ImgList, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
+  Vcl.Imaging.pngimage;
+
+type
+  TNovaSaidaFrm = class(TForm)
+    Panel1: TPanel;
+    Image1: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    btnSair: TSpeedButton;
+    btnConfirma: TSpeedButton;
+    edtValor: TButtonedEdit;
+    cmbOrigem: TComboBox;
+    mmDescricao: TMemo;
+    ImageList1: TImageList;
+    ActionList1: TActionList;
+    actConfirmar: TAction;
+    actSair: TAction;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  NovaSaidaFrm: TNovaSaidaFrm;
+
+implementation
+
+{$R *.dfm}
+
+end.

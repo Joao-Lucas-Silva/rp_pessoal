@@ -1,0 +1,78 @@
+unit ConexaoDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
+  Data.DB, FireDAC.Comp.Client, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf;
+
+type
+  TConexaoDtm = class(TDataModule)
+    Conexao: TFDConnection;
+    FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
+    cmd: TFDCommand;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure CriarTabelas();
+  public
+    { Public declarations }
+  end;
+
+var
+  ConexaoDtm: TConexaoDtm;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TConexaoDtm.CriarTabelas;
+begin
+  //Tabela Conta Correte
+  cmd.CommandText.Add('CREATE TABLE if not exists `rp_pessoal`.`conta_corrente` ('+
+  '`controle` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,'+
+  '`saldo` DECIMAL(12,2),'+
+  'PRIMARY KEY(`controle`)'+
+  ')'+
+  'ENGINE = InnoDB;');
+  cmd.Execute();
+
+  //Tabela Entrada
+  cmd.CommandText.Clear;
+  cmd.CommandText.Add('CREATE TABLE if not exists `rp_pessoal`.`entrada` ('+
+  '`cod_entrada` INTEGER unsigned NOT NULL AUTO_INCREMENT,'+
+  '`descricao` varchar(50) DEFAULT NULL,'+
+  '`cod_origem` INTEGER unsigned DEFAULT NULL,'+
+  '`data` date DEFAULT NULL,'+
+  '`hora` time DEFAULT NULL,'+
+  '`valor` decimal(12,2) DEFAULT NULL,'+
+  'PRIMARY KEY (`cod_entrada`)'+
+  ') ENGINE=InnoDB DEFAULT CHARSET=latin1;');
+  cmd.Execute();
+
+  //Tabela Saida
+  cmd.CommandText.Clear;
+  cmd.CommandText.Add('CREATE TABLE if not exists `rp_pessoal`.`saida` ('+
+  '`cod_saida` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,'+
+  '`descricao` VARCHAR(45),'+
+  '`cod_origem` INTEGER UNSIGNED,'+
+  '`data` DATE,'+
+  '`hora` TIME,'+
+  '`valor` DECIMAL(12,2),'+
+  'PRIMARY KEY(`cod_saida`)'+
+  ')'+
+  'ENGINE = InnoDB;');
+  cmd.Execute();
+end;
+
+procedure TConexaoDtm.DataModuleCreate(Sender: TObject);
+begin
+  CriarTabelas();
+end;
+
+end.

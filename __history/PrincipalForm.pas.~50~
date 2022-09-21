@@ -1,0 +1,279 @@
+unit PrincipalForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
+  System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
+  Vcl.ActnMan, ActnCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Imaging.pngimage;
+
+type
+  TPrincipalFrm = class(TForm)
+    Panel1: TPanel;
+    pnlSaldo: TPanel;
+    Label1: TLabel;
+    lblSaldo: TLabel;
+    ImageList1: TImageList;
+    btnNovaEntrada: TSpeedButton;
+    btnNovaSaida: TSpeedButton;
+    ActionList1: TActionList;
+    actNovaEntrada: TAction;
+    actNovaSaida: TAction;
+    qry: TFDQuery;
+    Panel2: TPanel;
+    actConfiguracoes: TAction;
+    actSair: TAction;
+    imgConfiguracoes: TImage;
+    imgSair: TImage;
+    lblSaudacoes: TLabel;
+    procedure actNovaSaidaExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormActivate(Sender: TObject);
+    procedure actNovaEntradaExecute(Sender: TObject);
+    procedure imgConfiguracoesClick(Sender: TObject);
+    procedure actSairExecute(Sender: TObject);
+    procedure imgSairClick(Sender: TObject);
+    procedure actConfiguracoesExecute(Sender: TObject);
+  private
+    { Private declarations }
+    procedure CalcularSaldo();
+    function Conectar():boolean;
+    function Saudacoes():string;
+  public
+    { Public declarations }
+    Caminho:string;
+    procedure Iniciar();
+  end;
+
+var
+  PrincipalFrm: TPrincipalFrm;
+
+implementation
+
+
+{$R *.dfm}
+
+uses ContaCorrenteDM, EntradaDM, SaidaDM, ConexaoDM, FerramentasForm,
+  NovaEntradaForm, NovaSaidaForm, ConexaoForm, ConfiguracoesForm;
+
+procedure TPrincipalFrm.actConfiguracoesExecute(Sender: TObject);
+begin
+  Application.CreateForm(TConfiguracoesFrm,ConfiguracoesFrm);
+  try
+    ConfiguracoesFrm.ShowModal;
+  finally
+    FreeAndNil(ConfiguracoesFrm);
+  end;
+end;
+
+procedure TPrincipalFrm.actNovaEntradaExecute(Sender: TObject);
+begin
+  Application.CreateForm(TNovaEntradaFrm,NovaEntradaFrm);
+  try
+    NovaEntradaFrm.ShowModal;
+  finally
+    FreeAndNil(NovaEntradaFrm);
+  end;
+  CalcularSaldo();
+end;
+
+procedure TPrincipalFrm.actNovaSaidaExecute(Sender: TObject);
+begin
+  Application.CreateForm(TNovaSaidaFrm,NovaSaidaFrm);
+  try
+    NovaSaidaFrm.ShowModal;
+  finally
+    FreeAndNil(NovaSaidaFrm);
+  end;
+  CalcularSaldo();
+end;
+
+procedure TPrincipalFrm.actSairExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TPrincipalFrm.CalcularSaldo;
+var
+  VlEntrada,
+  VlSaida,
+  VlSaldo:double;
+begin
+  VlEntrada:=0;
+  VlSaida:=0;
+  VlSaldo:=0;
+
+  //Soma todas as saídas.
+  qry.Close;
+  qry.SQL.Clear;
+  qry.SQL.Add('SELECT s.valor ');
+  qry.SQL.Add('FROM saida s ');
+  qry.Open();
+  qry.First;
+  while not (qry.Eof) do
+  begin
+    VlSaida:=VlSaida+qry.FieldByName('valor').AsFloat;
+    qry.Next;
+  end;
+
+  //Soma todas as entradas.
+  qry.Close;
+  qry.SQL.Clear;
+  qry.SQL.Add('SELECT e.valor ');
+  qry.SQL.Add('FROM entrada e ');
+  qry.Open();
+  qry.First;
+  while not (qry.Eof) do
+  begin
+    VlEntrada:=VlEntrada+qry.FieldByName('valor').AsFloat;
+    qry.Next;
+  end;
+
+  VlSaldo:=VlEntrada-VlSaida;
+
+  //Grava novo saldo e atualiza label
+  qry.Close;
+  qry.SQL.Clear;
+  qry.SQL.Add('SELECT c.saldo ');
+  qry.SQL.Add('FROM conta_corrente c ');
+  qry.Open();
+  if (qry.IsEmpty) then
+    qry.Append
+  else
+    qry.Edit;
+  qry.FieldByName('saldo').AsFloat:=VlSaldo;
+  try
+    qry.Post;
+    lblSaldo.Caption:='R$ '+FormatFloat('#,##0.00',vlSaldo);
+    lblSaldo.Update;
+
+    if (VlSaldo<0) then
+      pnlSaldo.Color:=clRed
+    else
+      pnlSaldo.Color:=clGreen;
+  except
+    on e:exception do
+    begin
+      FerramentasFrm.MsgPadrao(PChar('ERRO AO GRAVAR NOVO SALDO'+sLineBreak+'ERRO: '+E.Message),'ERRO',2);
+      lblSaldo.Caption:='#ERRO';
+      lblSaldo.Update;
+    end;
+  end;
+end;
+
+function TPrincipalFrm.Conectar: boolean;
+var
+  lParametrosConexao:TStringList;
+
+  i:integer;
+begin
+  Result:=False;
+
+  lParametrosConexao:=TStringList.Create;
+
+  lParametrosConexao.LoadFromFile(PrincipalFrm.Caminho+'DadosConexao.txt');
+
+  if (ConexaoDtm.Conexao.Connected=True) then
+      ConexaoDtm.Conexao.Connected:=False;
+  ConexaoDtm.Conexao.Params.Clear;
+  for i:=0 to lParametrosConexao.Count-1 do
+    ConexaoDtm.Conexao.Params.Add(lParametrosConexao.Strings[i]);
+  try
+    ConexaoDtm.Conexao.Connected:=True;
+    Result:=True;
+  except
+    on e:exception do
+    begin
+      FerramentasFrm.MsgPadrao(PChar('ERRO: '+e.Message),'ERRO',2);
+    end;
+  end;
+end;
+
+procedure TPrincipalFrm.FormActivate(Sender: TObject);
+begin
+  Iniciar();
+end;
+
+procedure TPrincipalFrm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FreeAndNil(ContaCorrenteDtm);
+end;
+
+procedure TPrincipalFrm.FormCreate(Sender: TObject);
+var
+  Conectado:boolean;
+begin
+  Caminho:='';
+  Caminho:=ExtractFilePath(Application.ExeName);
+
+  Conectado:=False;
+  if not (FileExists(Caminho+'DadosConexao.txt')) then
+  begin
+    Application.CreateForm(TConexaoFrm,ConexaoFrm);
+    try
+      if (ConexaoFrm.ShowModal=mrOk) then
+        Conectado:=True;
+    finally
+      FreeAndNil(ConexaoFrm);
+    end;
+  end
+  else
+  if (Conectar) then
+    Conectado:=True;
+
+  if not (Conectado) then
+    Application.Terminate
+  else
+  begin
+    Application.CreateForm(TContaCorrenteDtm,ContaCorrenteDtm);
+  end;
+end;
+
+procedure TPrincipalFrm.imgSairClick(Sender: TObject);
+begin
+  actSairExecute(Sender);
+end;
+
+procedure TPrincipalFrm.imgConfiguracoesClick(Sender: TObject);
+begin
+  actConfiguracoesExecute(Sender);
+end;
+
+procedure TPrincipalFrm.Iniciar;
+begin
+  CalcularSaldo();
+  showmessage('');
+  lblSaudacoes.Caption:=Saudacoes();
+  lblSaudacoes.Update;
+end;
+
+function TPrincipalFrm.Saudacoes: string;
+var
+  lNome:TStringList;
+begin
+  Result:='';
+  if (FileExists(Caminho+'nome.txt')) then
+  begin
+    lNome:=TStringList.Create;
+    lNome.LoadFromFile(Caminho+'nome.txt');
+
+    if (now>=StrToTime('12:00')) and
+       (now<StrToTime('19:00')) then
+      Result:='Boa tarde, '+lNome.Strings[0]+'!'
+    else
+    if (now>=StrToTime('01:00')) and
+       (now<StrToTime('12:00')) then
+      Result:='Bom dia, '+lNome.Strings[0]+'!'
+    else
+    if (now>=StrToTime('19:00')) and
+       (now<StrToTime('24:00')) then
+      Result:='Boa noite, '+lNome.Strings[0]+'!'
+  end;
+end;
+
+end.

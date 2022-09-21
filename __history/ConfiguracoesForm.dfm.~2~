@@ -1,0 +1,31 @@
+object ConfiguracoesFrm: TConfiguracoesFrm
+  Left = 0
+  Top = 0
+  Caption = 'CONFIGURA'#199#213'ES'
+  ClientHeight = 201
+  ClientWidth = 447
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 447
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 0
+    ExplicitLeft = 152
+    ExplicitTop = 24
+    ExplicitWidth = 185
+  end
+end

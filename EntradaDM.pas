@@ -1,0 +1,44 @@
+unit EntradaDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+  TEntradaDtm = class(TDataModule)
+    qryEntrada: TFDQuery;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Select,From:string;
+  end;
+
+var
+  EntradaDtm: TEntradaDtm;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses ConexaoDM;
+
+{$R *.dfm}
+
+procedure TEntradaDtm.DataModuleCreate(Sender: TObject);
+begin
+  Select:='SELECT e.cod_entrada,'+
+          ' e.descricao,'+
+          ' e.cod_origem,'+
+          ' e.data,'+
+          ' e.hora,'+
+          ' e.valor ';
+  From:='FROM entrada e '
+end;
+
+end.

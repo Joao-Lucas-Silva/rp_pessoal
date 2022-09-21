@@ -1,0 +1,25 @@
+unit EntradaDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TEntradaDtm = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  EntradaDtm: TEntradaDtm;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.
